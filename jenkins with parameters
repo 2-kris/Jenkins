@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    parameters{
+        string(name: 'VERSION', defaultValue:'', description: '')
+        choice(name:'VERSION',choices:['2.2.3','2.2.4','2.2.5'], description: '')
+        booleanParam(name:'executeTests', defaultValue: true, description: '')
+    }
+    stages {
+        stage ('code clone') {
+            steps {
+             echo "code cloned"   
+            }
+        }
+        stage ("code build") {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
+            steps {
+                echo "code building"
+            }
+        }
+        stage ("code deployed") {
+            steps {
+                echo "code deployed"
+                echo "deployied version ${params.VERSION}"
+            }
+        }
+    }
+}
